@@ -1,0 +1,13 @@
+---
+#Write a playbook that will collect the uptime of a target VM in a variable as first task and later print the value of the variable as standard output
+#Ensure that error handling is taken care of.
+
+- name: Gather and display the uptime of a VM
+  hosts: linux
+  tasks:
+    - name: Gather and display the uptime of a Ansible Slave node
+      shell: uptime
+      register: servertime
+    - debug:
+       var: servertime
+...

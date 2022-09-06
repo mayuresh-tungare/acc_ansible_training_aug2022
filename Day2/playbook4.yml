@@ -1,0 +1,4 @@
+---
+#Update the playbook3 to get the string variable from inventory file
+#Ensure that error handling is taken care of.
+...

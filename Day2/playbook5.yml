@@ -1,0 +1,4 @@
+---
+#Combine playbook3 and playbook4 to find out in case of variable present both in inventory file and within playbook with different values, which one is taking precedence.
+#Printing the standard output of variable will help find the precedence. Ensure that error handling is taken care of.
+...
