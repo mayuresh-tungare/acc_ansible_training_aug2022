@@ -1,0 +1,49 @@
+---
+#Write a playbook that will install the latest version of following and later ensure that services are running/enabled - Firewalld, Httpd, Mariadb-server, Php, Php-mysql
+#Ensure that error handling is taken care of.
+
+- name: Installation packages for of the latest version of Firewalld, Httpd, mysql-server, Php, Php-mysql
+  hosts: linux
+  vars:
+    - package_install:
+        - firewalld
+        - httpd
+    - services_start:
+        - firewalld
+        - httpd
+        - mariadb-server
+        - php
+        - php-mysql    
+  tasks:
+    - name: Installation packages for the latest version of Firewalld, Httpd
+      yum:
+        name: "{{ item }}"
+        state: present
+      with_items: "{{ package_install}}"
+      ignore_errors: yes
+      become: true
+
+    - name: Install packages for the latest version of mariadb-server
+      package:
+        name: 
+          - mariadb-server
+      become: true
+      ignore_errors: yes
+
+    - name: Install packages for the latest version of php
+      package:
+        name: 
+          - php
+          - php-mysql
+      become: true
+      ignore_errors: yes
+
+    - name: Ensure all installed services are enabled and running
+      systemd:
+        name: "{{ item }}"
+        state: started
+        enabled: yes
+      with_items: "{{ services_start }}"
+      ignore_errors: yes
+      become: true
+...
