@@ -1,4 +1,37 @@
 ---
-#Update the playbook3 to get the string variable from inventory file
+#Write a playbook that will do the following tasks:
+#Store a custom message in a global string variable and later print it inside a task
+#Create a folder in target node at specified path e.g. /home/ansible_admin/test_playbook
+#Create a text file in the folder created in ‘b’ and put the value of the variable, created in ‘a’, as content of the file
 #Ensure that error handling is taken care of.
+
+- name: Playbook start
+  hosts: linux
+
+  tasks:
+    - name: Store a custom message in a global string variable and later print it inside a task
+      debug:
+        msg: "This is the output of the variable: {{ test_message }}"
+
+    - name: Create a directory on slave node
+      file:
+        path: /home/ansible_admin/test_playbook
+        state: directory
+        owner: ansible_admin
+        mode: 666
+
+    - name: Create a text file in the newly created directory
+      file:
+        path: /home/ansible_admin/test_playbook/text_file
+        state: touch
+        owner: ansible_admin
+        mode: 766
+      become: yes
+
+    - name: Put value of the variable in the newly created file
+      lineinfile:
+        path: /home/ansible_admin/test_playbook/text_file
+        line: "{{ test_message }} has been successfully added to this file now!"
+        create: true
+      become: yes
 ...
